@@ -1,29 +1,26 @@
-FROM travix/base-alpine:3.3
+FROM ubuntu:trusty
 
 MAINTAINER Travix
 
-# build time environment variables
-ENV HAPROXY_VERSION=1.6.2-r0
+# Install haproxy
+RUN \
+  sed -i 's/^# \(.*-backports\s\)/\1/g' /etc/apt/sources.list \
+  && apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y haproxy/trusty-backports 
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* \
+  && mkdir /data
 
-# install haproxy
-RUN apk --update add \
-      haproxy=$HAPROXY_VERSION \
-    && rm /var/cache/apk/*
+ADD haproxy.cfg /data/haproxy.cfg
 
-ADD haproxy.cfg /etc/haproxy/haproxy.cfg
-ADD ssl.pem /etc/ssl/private/ssl.pem
-
-# expose ports
-EXPOSE 80 443
+# Define mountable directories
+VOLUME ["/data"]
 
 # Define working directory
-WORKDIR /etc/haproxy
+WORKDIR /data
 
-# runtime environment variables
-ENV OFFLOAD_TO_PORT=5000 \
-    SSL_CERTIFICATE_NAME=ssl.pem
+# Expose ports
+EXPOSE 80 443
 
-# define default command
-CMD sed -i -e "s/localhost:5000/localhost:${OFFLOAD_TO_PORT}/" /etc/haproxy/haproxy.cfg; \
-    sed -i -e "s/ssl.pem/${SSL_CERTIFICATE_NAME}/" /etc/haproxy/haproxy.cfg; \    
-    exec haproxy -db -f /etc/haproxy/haproxy.cfg;
+# Define default command
+CMD ["haproxy", "-f", "/data/haproxy.cfg"]
