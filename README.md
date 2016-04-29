@@ -1,3 +1,11 @@
+# travix/haproxy
+
+[HAProxy](http://www.haproxy.org/) load balancer
+
+[![Stars](https://img.shields.io/docker/stars/travix/haproxy.svg)](https://hub.docker.com/r/travix/haproxy/)
+[![Pulls](https://img.shields.io/docker/pulls/travix/haproxy.svg)](https://hub.docker.com/r/travix/haproxy/)
+[![License](https://img.shields.io/github/license/Travix-International/docker-haproxy.svg)](https://github.com/Travix-International/docker-haproxy/blob/master/LICENSE)
+
 # Usage
 
 To run this docker container use the following command
