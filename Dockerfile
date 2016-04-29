@@ -6,7 +6,7 @@ MAINTAINER Travix
 RUN \
   sed -i 's/^# \(.*-backports\s\)/\1/g' /etc/apt/sources.list \
   && apt-get update \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -y haproxy/trusty-backports 
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y haproxy/trusty-backports \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* \
   && mkdir /data
