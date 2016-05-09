@@ -23,11 +23,18 @@ WORKDIR /etc/haproxy
 ENV OFFLOAD_TO_PORT="5000" \
     SSL_CERTIFICATE_NAME="ssl.pem" \
     HEALT_CHECK_PATH="/healthz" \
-    HEALT_CHECK_VERB="HEAD"
+    HEALT_CHECK_VERB="HEAD" \
+    WHITELIST_CIDRS=""
 
 # define default command
-CMD sed -i -e "s/localhost:5000/localhost:${OFFLOAD_TO_PORT}/" /etc/haproxy/haproxy.cfg; \
+CMD if [ "${WHITELIST_CIDRS}" != "" ]; then \
+      WHITELIST1="acl good_guys_ip hdr_ip(X-Forwarded-For) ${WHITELIST_CIDRS}"; \
+      WHITELIST2="http-request deny if !good_guys_ip"; \
+    fi; \
+    sed -i -e "s/localhost:5000/localhost:${OFFLOAD_TO_PORT}/" /etc/haproxy/haproxy.cfg; \
     sed -i -e "s/ssl.pem/${SSL_CERTIFICATE_NAME}/" /etc/haproxy/haproxy.cfg; \    
     sed -i -e "s/option httpchk HEAD/option httpchk ${HEALT_CHECK_VERB}/" /etc/haproxy/haproxy.cfg; \
     sed -i -e "s:/healthz:${HEALT_CHECK_PATH}:" /etc/haproxy/haproxy.cfg; \    
+    sed -i -e "s:WHITELIST1:${WHITELIST1}:" /etc/haproxy/haproxy.cfg; \
+    sed -i -e "s:WHITELIST2:${WHITELIST2}:" /etc/haproxy/haproxy.cfg; \
     exec haproxy -db -f /etc/haproxy/haproxy.cfg;
