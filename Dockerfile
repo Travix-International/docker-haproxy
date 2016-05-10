@@ -25,7 +25,7 @@ ENV OFFLOAD_TO_PORT="5000" \
     HEALT_CHECK_PATH="/healthz" \
     HEALT_CHECK_VERB="HEAD" \
     WHITELIST_CIDRS="0.0.0.0/0" \
-    TLS_SETTINGS="force-tlsv12 no-sslv3"
+    TLS_SETTINGS="no-sslv3 no-tls-tickets force-tlsv12"
 
 # define default command
 CMD sed -i -e "s/localhost:5000/localhost:${OFFLOAD_TO_PORT}/" /etc/haproxy/haproxy.cfg; \
