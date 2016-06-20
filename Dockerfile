@@ -20,7 +20,8 @@ EXPOSE 80 81 82 443
 WORKDIR /etc/haproxy
 
 # runtime environment variables
-ENV OFFLOAD_TO_PORT="5000" \
+ENV OFFLOAD_TO_HOST="localhost" \
+    OFFLOAD_TO_PORT="5000" \
     DIRECT_HOST_NAME="directhostname" \
     SSL_CERTIFICATE_NAME="ssl.pem" \
     HEALT_CHECK_PATH="/healthz" \
@@ -29,7 +30,7 @@ ENV OFFLOAD_TO_PORT="5000" \
     TLS_SETTINGS="no-sslv3 no-tls-tickets force-tlsv12"
 
 # define default command
-CMD sed -i -e "s/localhost:5000/localhost:${OFFLOAD_TO_PORT}/" /etc/haproxy/haproxy.cfg; \
+CMD sed -i -e "s/localhost:5000/${OFFLOAD_TO_HOST}:${OFFLOAD_TO_PORT}/" /etc/haproxy/haproxy.cfg; \
     sed -i -e "s/directhostname/${DIRECT_HOST_NAME}/" /etc/haproxy/haproxy.cfg; \
     sed -i -e "s/ssl.pem/${SSL_CERTIFICATE_NAME}/" /etc/haproxy/haproxy.cfg; \    
     sed -i -e "s/option httpchk HEAD/option httpchk ${HEALT_CHECK_VERB}/" /etc/haproxy/haproxy.cfg; \
