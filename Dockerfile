@@ -3,7 +3,7 @@ FROM travix/base-alpine:3.3
 MAINTAINER Travix
 
 # build time environment variables
-ENV HAPROXY_VERSION=1.6.2-r0
+ENV HAPROXY_VERSION=1.6.6-r0
 
 # install haproxy
 RUN apk --update add \
@@ -32,9 +32,9 @@ ENV OFFLOAD_TO_HOST="localhost" \
 # define default command
 CMD sed -i -e "s/localhost:5000/${OFFLOAD_TO_HOST}:${OFFLOAD_TO_PORT}/" /etc/haproxy/haproxy.cfg; \
     sed -i -e "s/directhostname/${DIRECT_HOST_NAME}/" /etc/haproxy/haproxy.cfg; \
-    sed -i -e "s/ssl.pem/${SSL_CERTIFICATE_NAME}/" /etc/haproxy/haproxy.cfg; \    
+    sed -i -e "s/ssl.pem/${SSL_CERTIFICATE_NAME}/" /etc/haproxy/haproxy.cfg; \
     sed -i -e "s/option httpchk HEAD/option httpchk ${HEALT_CHECK_VERB}/" /etc/haproxy/haproxy.cfg; \
-    sed -i -e "s:/healthz:${HEALT_CHECK_PATH}:" /etc/haproxy/haproxy.cfg; \    
+    sed -i -e "s:/healthz:${HEALT_CHECK_PATH}:" /etc/haproxy/haproxy.cfg; \
     sed -i -e "s:WHITELIST_CIDRS:${WHITELIST_CIDRS}:" /etc/haproxy/haproxy.cfg; \
     sed -i -e "s:TLS_SETTINGS:${TLS_SETTINGS}:" /etc/haproxy/haproxy.cfg; \
     exec haproxy -db -f /etc/haproxy/haproxy.cfg;
