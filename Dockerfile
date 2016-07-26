@@ -1,12 +1,12 @@
-FROM travix/base-alpine:3.3
+FROM travix/base-alpine:3.4
 
 MAINTAINER Travix
 
 # build time environment variables
-ENV HAPROXY_VERSION=1.6.2-r0
+ENV HAPROXY_VERSION=1.6.6-r1
 
 # install haproxy
-RUN apk --update add \
+RUN apk --update --no-cache add \
       haproxy=$HAPROXY_VERSION \
     && rm /var/cache/apk/*
 
