@@ -14,7 +14,7 @@ ADD haproxy.cfg /etc/haproxy/haproxy.cfg
 ADD ssl.pem /etc/ssl/private/ssl.pem
 
 # expose ports
-EXPOSE 80 81 82 443
+EXPOSE 80 81 82 83 443
 
 # Define working directory
 WORKDIR /etc/haproxy
