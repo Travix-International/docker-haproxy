@@ -27,9 +27,7 @@ ENV OFFLOAD_TO_HOST="localhost" \
     HEALT_CHECK_PATH="/healthz" \
     HEALT_CHECK_VERB="HEAD" \
     WHITELIST_CIDRS="0.0.0.0/0" \
-    TLS_SETTINGS="no-sslv3 no-tls-tickets force-tlsv12" \
-    ENABLE_STATS="disable" \
-    STATS_PASSWORD=""
+    TLS_SETTINGS="no-sslv3 no-tls-tickets force-tlsv12"
 
 # define default command
 CMD sed -i -e "s/localhost:5000/${OFFLOAD_TO_HOST}:${OFFLOAD_TO_PORT}/" /etc/haproxy/haproxy.cfg; \
@@ -39,6 +37,4 @@ CMD sed -i -e "s/localhost:5000/${OFFLOAD_TO_HOST}:${OFFLOAD_TO_PORT}/" /etc/hap
     sed -i -e "s:/healthz:${HEALT_CHECK_PATH}:" /etc/haproxy/haproxy.cfg; \    
     sed -i -e "s:WHITELIST_CIDRS:${WHITELIST_CIDRS}:" /etc/haproxy/haproxy.cfg; \
     sed -i -e "s:TLS_SETTINGS:${TLS_SETTINGS}:" /etc/haproxy/haproxy.cfg; \
-    sed -i -e "s:stats disable:stats ${ENABLE_STATS}:" /etc/haproxy/haproxy.cfg; \
-    sed -i -e "s:statspassword:${STATS_PASSWORD}:" /etc/haproxy/haproxy.cfg; \
     exec haproxy -db -f /etc/haproxy/haproxy.cfg;
