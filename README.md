@@ -22,6 +22,7 @@ In order to configure the haproxy load balancer for providing ssl on port 443 fo
 | -------------------- | ------------------------------------------------------------------------- | ------------- |
 | OFFLOAD_TO_PORT      | The http port the actual application inside the Kubernetes pod listens to | 5000          |
 | SSL_CERTIFICATE_NAME | The pem filename for the ssl certificate used on port 443                 | ssl.pem       |
+| X_FRAME_OPTIONS      | X-Frame-Options header value                                              | DENY          |
 
 ```sh
 docker run -d \
