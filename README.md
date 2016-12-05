@@ -18,11 +18,12 @@ docker run -d travix/haproxy:latest
 
 In order to configure the haproxy load balancer for providing ssl on port 443 for your gocd server you can use the following environment variables
 
-| Name                 | Description                                                               | Default value |
-| -------------------- | ------------------------------------------------------------------------- | ------------- |
-| OFFLOAD_TO_PORT      | The http port the actual application inside the Kubernetes pod listens to | 5000          |
-| SSL_CERTIFICATE_NAME | The pem filename for the ssl certificate used on port 443                 | ssl.pem       |
-| X_FRAME_OPTIONS      | X-Frame-Options header value                                              | DENY          |
+| Name                   | Description                                                               | Default value   |
+| ---------------------- | ------------------------------------------------------------------------- | --------------- |
+| OFFLOAD_TO_PORT        | The http port the actual application inside the Kubernetes pod listens to | 5000            |
+| SSL_CERTIFICATE_NAME   | The pem filename for the ssl certificate used on port 443                 | ssl.pem         |
+| X_FORWARDED_FOR_HEADER | X-Forwarded-For header value to check                                     | X-Forwarded-For |
+| X_FRAME_OPTIONS        | X-Frame-Options header value                                              | DENY            |
 
 ```sh
 docker run -d \
