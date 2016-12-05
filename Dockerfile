@@ -15,6 +15,9 @@ COPY entrypoint.sh /entrypoint.sh
 COPY haproxy.cfg /etc/haproxy/haproxy.cfg
 COPY ssl.pem /etc/ssl/private/ssl.pem
 
+# make entrypoint executable
+RUN chmod 500 /entrypoint.sh
+
 # expose ports
 EXPOSE 80 81 82 83 443
 
