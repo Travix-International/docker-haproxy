@@ -36,7 +36,9 @@ ENV DIRECT_HOST_NAME="directhostname" \
     TLS_SETTINGS="no-sslv3 no-tls-tickets force-tlsv12" \
     WHITELIST_CIDRS="0.0.0.0/0" \
     X_FORWARDED_FOR_HEADER="X-Forwarded-For" \
-    X_FRAME_OPTIONS="DENY"
+    X_FRAME_OPTIONS="DENY" \
+    CLIENT_TIMEOUT="50000" \
+    SERVER_TIMEOUT="50000"
 
 ENTRYPOINT ["/entrypoint.sh"]
 
