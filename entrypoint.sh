@@ -16,4 +16,25 @@ sed -i -e "s:statspassword:${STATS_PASSWORD}:" /etc/haproxy/haproxy.cfg
 sed -i -e "s/timeout client  50000/timeout client  ${CLIENT_TIMEOUT}/" /etc/haproxy/haproxy.cfg
 sed -i -e "s/timeout server  50000/timeout server  ${SERVER_TIMEOUT}/" /etc/haproxy/haproxy.cfg
 
+if [ "$BASIC_AUTH" != "" ]
+then
+  # Add users to userlist and enable basic auth
+  awk -v auth="$BASIC_AUTH" '
+    /userlist auth_users/{
+      print $0
+      split(auth,creds," ")
+      for (i in creds) {
+        split(creds[i],user,":")
+        print "  user " user[1] " insecure-password " user[2]
+      }
+      next
+    }
+    /http-request deny/{
+      print "  http-request auth unless basic_auth"
+      next
+    }
+    1
+  ' /etc/haproxy/haproxy.cfg > /tmp/haproxy.cfg && mv /tmp/haproxy.cfg /etc/haproxy/
+fi
+
 exec "$@"

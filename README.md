@@ -20,15 +20,31 @@ In order to configure the haproxy load balancer for providing ssl on port 443 fo
 
 | Name                   | Description                                                               | Default value   |
 | ---------------------- | ------------------------------------------------------------------------- | --------------- |
+| BASIC_AUTH             | Space separated list of users for BasicAuth                               |                 |
 | OFFLOAD_TO_PORT        | The http port the actual application inside the Kubernetes pod listens to | 5000            |
 | SSL_CERTIFICATE_NAME   | The pem filename for the ssl certificate used on port 443                 | ssl.pem         |
 | X_FORWARDED_FOR_HEADER | X-Forwarded-For header value to check                                     | X-Forwarded-For |
 | X_FRAME_OPTIONS        | X-Frame-Options header value                                              | DENY            |
 
+## Custom port
+
+```sh
+docker run -d -e "OFFLOAD_TO_PORT=8153" travix/haproxy:latest
+```
+
+## IP Whitelisting
+
 ```sh
 docker run -d \
-    -e "OFFLOAD_TO_PORT=8153" \
-    -e "SSL_CERTIFICATE_NAME=yourdomain.com.pem" \
+    -e "WHITELIST_CIDRS=1.2.3.4/32 192.168.0.1/24" \
+    travix/haproxy:latest
+```
+
+## Basic authentication
+
+```sh
+docker run -d \
+    -e "BASIC_AUTH=user1:pass1234 user2:1234pass" \
     travix/haproxy:latest
 ```
 
