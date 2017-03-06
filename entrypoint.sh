@@ -29,11 +29,8 @@ then
       }
       next
     }
-    /http-request allow if white_list_src !has_xforwardedfor_header OR white_list_fwd has_xforwardedfor_header/{
-      print "  http-request auth unless white_list_src !has_xforwardedfor_header OR white_list_fwd has_xforwardedfor_header OR is_authenticated"
-      next
-    }
     /http-request deny/{
+      print "  http-request auth unless is_authenticated"
       next
     }
     1
